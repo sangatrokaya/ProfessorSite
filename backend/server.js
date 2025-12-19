@@ -8,13 +8,10 @@ import adminRoutes from "./routes/adminRoutes.js"; // Import your admin dahboard
 // Load environment variable into process.env
 dotenv.config();
 
-// Connect to mongoDB
-connectDB();
-
 // Create an Express application instance
 const app = express();
 
-/* --------------- MIDDLEWARES ----------------- */
+/* --------------- GLOBAL MIDDLEWARES ----------------- */
 
 // Enable CORS so frontend (different origin) can access this API
 app.use(cors());
@@ -30,16 +27,32 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 
 /* ------- Root test route (optional) ------------- */
+
 // Root route to verify that the API server is running
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-// Define server port
-// Uses PORT from environment variables if available, otherwise defaults to 5000
-const PORT = process.env.PORT || 5000;
+/* ------ Function to start server only after DB connection -------- */
+const startServer = async () => {
+  try {
+    // Connect to mongoDB first
+    await connectDB();
 
-// Start the server and listen for incoming requests
-app.listen(PORT, () => {
-  console.log(`Server is up and running on port ${PORT}`);
-});
+    // Define server port
+    // Uses PORT from environment variables if available, otherwise defaults to 5000
+    const PORT = process.env.PORT || 5000;
+
+    // Start server only if DB connection is successful
+    // Server listen for incoming requests
+    app.listen(PORT, () => {
+      console.log(`Server is up and running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.log("Failed to start server:", error.message);
+    process.exit(1); // Exit if DB connection fails
+  }
+};
+
+// Start the application
+startServer();

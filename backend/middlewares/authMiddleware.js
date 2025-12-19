@@ -16,7 +16,6 @@ export const protect = async (req, res, next) => {
 
       // Verify token using JWT secret from environment variables
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log("Decoded token:", decoded);
 
       // Fetch admin from database using ID from decoded token
       // Exclude password from the returned admin object
