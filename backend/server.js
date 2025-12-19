@@ -2,13 +2,18 @@ import express from "express"; // Import express framework to create the backend
 import dotenv from "dotenv"; // Import dotenv to laod environment variables from .env file
 import cors from "cors"; // Import cors middleware to allow cross-origin requests
 import connectDB from "./config/db.js"; // To connect DB and server
+import authRoutes from "./routes/authRoutes.js"; // Import your auth routes
 
 // Load environment variable into process.env
 dotenv.config();
+
+// Connect to mongoDB
 connectDB();
 
 // Create an Express application instance
 const app = express();
+
+/* --------------- MIDDLEWARES ----------------- */
 
 // Enable CORS so frontend (different origin) can access this API
 app.use(cors());
@@ -17,6 +22,12 @@ app.use(cors());
 // Allows us to read req.body in POST/PUT requests
 app.use(express.json());
 
+/* --------------- ROUTES ----------------------- */
+
+// Mount auth routes at /api/auth
+app.use("/api/auth", authRoutes);
+
+/* ------- Root test route (optional) ------------- */
 // Root route to verify that the API server is running
 app.get("/", (req, res) => {
   res.send("API is running...");
