@@ -21,6 +21,6 @@ export const adminLogin = async (req, res) => {
     });
   } else {
     // If email or password is invalid, return 401 Unauthorized
-    res.status(401).json({ message: "invalid email or password" });
+    res.status(401).json({ message: "invalid email or password!" });
   }
 };
