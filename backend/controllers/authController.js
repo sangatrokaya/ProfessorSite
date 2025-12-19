@@ -13,7 +13,7 @@ export const adminLogin = async (req, res) => {
   // matchPassword is a method defined in the Admin model using bcrypt
   if (admin && (await admin.matchPassword(password))) {
     // If valid, respond with admin details and JWT token
-    res.josn({
+    res.json({
       _id: admin._id,
       name: admin.name,
       email: admin.email,

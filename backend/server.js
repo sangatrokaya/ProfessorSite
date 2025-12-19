@@ -3,6 +3,7 @@ import dotenv from "dotenv"; // Import dotenv to laod environment variables from
 import cors from "cors"; // Import cors middleware to allow cross-origin requests
 import connectDB from "./config/db.js"; // To connect DB and server
 import authRoutes from "./routes/authRoutes.js"; // Import your auth routes
+import adminRoutes from "./routes/adminRoutes.js"; // Import your admin dahboard routes
 
 // Load environment variable into process.env
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(express.json());
 
 // Mount auth routes at /api/auth
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 /* ------- Root test route (optional) ------------- */
 // Root route to verify that the API server is running

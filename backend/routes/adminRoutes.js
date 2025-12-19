@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/dashboard", protect, (req, res) => {
   res.json({
     // Response message for successful authentication
-    message: "Welcome to Admin Dashboard",
+    message: "Welcome to Admin Dashboard!",
 
     // Admin data attached to request object by protect middleware
     admin: req.admin,

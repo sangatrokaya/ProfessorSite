@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken"; // Import jwt to verify JWT tokens
 import Admin from "../models/Admin.js"; // Import Admin model to fetch authenticated admin from mongoDB
 
 // Middleware to protect routes and allow only authenticated admins
-export const protect = async (requestAnimationFrame, res, next) => {
+export const protect = async (req, res, next) => {
   let token;
   // Check if authorization header exists and starts with "Bearer"
   if (
@@ -16,6 +16,7 @@ export const protect = async (requestAnimationFrame, res, next) => {
 
       // Verify token using JWT secret from environment variables
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log("Decoded token:", decoded);
 
       // Fetch admin from database using ID from decoded token
       // Exclude password from the returned admin object
