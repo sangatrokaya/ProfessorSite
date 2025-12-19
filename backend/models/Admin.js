@@ -27,6 +27,26 @@ const adminSchema = mongoose.Schema(
   }
 );
 
+// Mongoose middleware: runs before saving a document
+// used here to hash the password securely
+adminSchema.pre("save", async function (next) {
+  // If password is not modified, skip hashing
+  if (!this.isModified("password")) {
+    return next();
+  }
+  //   Generate salt for hashing
+  const salt = await bcrypt.genSalt(10);
+
+  //   Hash the pasword and tore it in the database
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+// Instance method to compare entered password with hashed password
+// Used during login authentication
+adminSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
 // Create Admin model from schema
 const Admin = mongoose.model("Admin", adminSchema);
 
