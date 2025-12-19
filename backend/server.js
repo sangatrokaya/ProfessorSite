@@ -1,9 +1,11 @@
 import express from "express"; // Import express framework to create the backend server
 import dotenv from "dotenv"; // Import dotenv to laod environment variables from .env file
 import cors from "cors"; // Import cors middleware to allow cross-origin requests
+import connectDB from "./config/db.js"; // To connect DB and server
 
 // Load environment variable into process.env
 dotenv.config();
+connectDB();
 
 // Create an Express application instance
 const app = express();
