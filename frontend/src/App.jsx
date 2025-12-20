@@ -6,6 +6,7 @@ import AdminLayout from "./layout/AdminLayout.jsx";
 import Papers from "./pages/admin/Papers.jsx";
 import Courses from "./pages/admin/Courses.jsx";
 import Blogs from "./pages/admin/Blogs.jsx";
+import Videos from "./pages/admin/Videos.jsx";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="papers" element={<Papers />} />
           <Route path="courses" element={<Courses />} />
           <Route path="blogs" element={<Blogs />} />
+          <Route path="videos" element={<Videos />} />
         </Route>
       </Routes>
     </BrowserRouter>

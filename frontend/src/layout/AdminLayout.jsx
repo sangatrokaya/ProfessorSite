@@ -26,7 +26,12 @@ const AdminLayout = () => {
           >
             Blogs
           </p>
-          <p className="cursor-pointer">Videos</p>
+          <p
+            className="cursor-pointer"
+            onClick={() => navigate("/admin/videos")}
+          >
+            Videos
+          </p>
         </nav>
       </aside>
 
