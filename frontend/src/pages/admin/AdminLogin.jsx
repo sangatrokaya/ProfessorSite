@@ -47,8 +47,8 @@ const AdminLogin = () => {
     dispatch(loginAdmin({ email, password }));
   };
   return (
-    <div style={{ maxWidth: "400px", margin: "100px auto" }}>
-      <h2>Admin Login</h2>
+    <div className="max-w-md mx-auto mt-24 p-6 bg-grau-100 rounded-lg shadow">
+      <h2 className="text-3xl font-bold text-red-600 mb-4">Admin Login</h2>
 
       {/* Show error message if login fails */}
       {error && <p style={{ color: "red" }}>{error}</p>}
