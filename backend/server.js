@@ -7,6 +7,7 @@ import adminRoutes from "./routes/adminRoutes.js"; // Import your admin dahboard
 import paperRoutes from "./routes/paperRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
+import videoRoutes from "./routes/videoRoutes.js";
 // Load environment variable into process.env
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/papers", paperRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/blogs", blogRoutes);
+app.use("/api/videos", videoRoutes);
 /* ------- Root test route (optional) ------------- */
 
 // Root route to verify that the API server is running
