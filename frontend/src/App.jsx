@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import AdminLayout from "./layout/AdminLayout.jsx";
 import Papers from "./pages/admin/Papers.jsx";
 import Courses from "./pages/admin/Courses.jsx";
+import Blogs from "./pages/admin/Blogs.jsx";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="papers" element={<Papers />} />
           <Route path="courses" element={<Courses />} />
+          <Route path="blogs" element={<Blogs />} />
         </Route>
       </Routes>
     </BrowserRouter>
