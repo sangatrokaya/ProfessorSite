@@ -8,7 +8,12 @@ const AdminLayout = () => {
         <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
         <nav className="space-y-3">
           <p className="cursor-pointer">Dashboard</p>
-          <p className="cursor-pointer">Papers & Publications</p>
+          <p
+            className="cursor-pointer"
+            onClick={() => Navigate("/admin/papers")}
+          >
+            Papers & Publications
+          </p>
           <p className="cursor-pointer">Courses</p>
           <p className="cursor-pointer">Blogs</p>
           <p className="cursor-pointer">Videos</p>

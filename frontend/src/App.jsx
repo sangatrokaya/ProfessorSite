@@ -3,6 +3,7 @@ import AdminLogin from "./pages/admin/AdminLogin.jsx";
 import Dashboard from "./pages/admin/Dashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import AdminLayout from "./layout/AdminLayout.jsx";
+import Papers from "./pages/admin/Papers.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           }
         >
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="papers" element={<Papers />} />
         </Route>
       </Routes>
     </BrowserRouter>
