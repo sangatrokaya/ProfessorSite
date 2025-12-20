@@ -9,7 +9,7 @@ export const getBlogs = async (req, res) => {
 };
 
 // @desc Get all blogs (Admin)
-// @route GET /api/blogs
+// @route GET /api/blogs/admin
 // @access Admin
 export const getAllBlogsAdmin = async (req, res) => {
   const blogs = await Blog.find().sort({ createdAt: -1 });
