@@ -3,6 +3,7 @@
 // createAsyncThunk -> handles async logic (API calls)
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios"; // used to make HTTP requests
+import api from "../../services/api";
 
 /*
     Try to get already logged-in admin data from LocalStorage.
@@ -36,10 +37,7 @@ export const loginAdmin = createAsyncThunk(
   async ({ email, password }, thunkAPI) => {
     try {
       // Send login request to backend
-      const { data } = await axios.post(
-        `https://localhost:${POPRT}/api/auth/login`,
-        { email, password }
-      );
+      const { data } = await api.post("/api/auth/login", { email, password });
 
       //   Save admin data in LocalStorage for persistence
       localStorage.setItem("adminInfo", JSON.stringify(data));

@@ -1,13 +1,15 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AdminLogin from "./pages/admin/AdminLogin";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AdminLogin from "./pages/admin/AdminLogin.jsx";
+import Dashboard from "./pages/admin/Dashboard.jsx";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/admin/login" element={AdminLogin} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 export default App;
