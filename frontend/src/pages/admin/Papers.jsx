@@ -37,7 +37,7 @@ const Papers = () => {
         className="bg-black text-white px-4 py-2 mb-4"
         onClick={addPaperHandler}
       >
-        Add
+        Add Paper
       </button>
 
       <ul className="sapce-y-2">

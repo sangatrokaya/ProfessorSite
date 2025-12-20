@@ -10,11 +10,16 @@ const AdminLayout = () => {
           <p className="cursor-pointer">Dashboard</p>
           <p
             className="cursor-pointer"
-            onClick={() => Navigate("/admin/papers")}
+            onClick={() => navigate("/admin/papers")}
           >
             Papers & Publications
           </p>
-          <p className="cursor-pointer">Courses</p>
+          <p
+            className="cursor-pointer"
+            onClick={() => navigate("/admin/courses")}
+          >
+            Courses
+          </p>
           <p className="cursor-pointer">Blogs</p>
           <p className="cursor-pointer">Videos</p>
         </nav>
