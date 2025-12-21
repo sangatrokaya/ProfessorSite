@@ -7,10 +7,10 @@ import AdminLayout from "./layout/AdminLayout.jsx";
 /* ------------- PUBLIC PAGES ---------- */
 import Home from "./pages/public/Home.jsx";
 import About from "./pages/public/About.jsx";
-import Papers from "./pages/admin/Papers.jsx";
+import Papers from "./pages/public/Papers.jsx";
 import Courses from "./pages/public/Courses.jsx";
-import Blogs from "./pages/admin/Blogs.jsx";
-import Videos from "./pages/admin/Videos.jsx";
+import Blogs from "./pages/public/Blogs.jsx";
+import Videos from "./pages/public/Videos.jsx";
 import Contact from "./pages/public/Contact.jsx";
 
 /* ----------- ADMIN PAGES -------------- */
