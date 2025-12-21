@@ -4,6 +4,7 @@ import {
   deleteBlog,
   getAllBlogsAdmin,
   getBlogs,
+  getBlogById,
 } from "../controllers/blogController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
@@ -14,6 +15,10 @@ router.get("/", getBlogs);
 
 // Admin
 router.get("/admin", protect, getAllBlogsAdmin);
+
+// Public - single blog (KEEP LAST)
+router.get("/:id", getBlogById);
+
 router.post("/", protect, createBlog);
 router.delete("/:id", protect, deleteBlog);
 

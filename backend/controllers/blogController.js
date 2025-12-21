@@ -8,6 +8,19 @@ export const getBlogs = async (req, res) => {
   res.json(blogs);
 };
 
+// @desc Get single blog
+// @route GET /api/blogs/:id
+// @access Public
+export const getBlogById = async (req, res) => {
+  const blog = await Blog.findById(req.params.id);
+
+  if (blog && blog.published) {
+    res.json(blog);
+  } else {
+    res.status(404).json({ message: "Blog not found!" });
+  }
+};
+
 // @desc Get all blogs (Admin)
 // @route GET /api/blogs/admin
 // @access Admin
