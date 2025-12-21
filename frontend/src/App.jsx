@@ -12,6 +12,7 @@ import Courses from "./pages/public/Courses.jsx";
 import Blogs from "./pages/public/Blogs.jsx";
 import Videos from "./pages/public/Videos.jsx";
 import Contact from "./pages/public/Contact.jsx";
+import BlogDetails from "./pages/public/BlogDetails.jsx";
 
 /* ----------- ADMIN PAGES -------------- */
 import AdminLogin from "./pages/admin/AdminLogin.jsx";
@@ -33,6 +34,7 @@ function App() {
           <Route path="papers" element={<Papers />} />
           <Route path="courses" element={<Courses />} />
           <Route path="blogs" element={<Blogs />} />
+          <Route path="/blogs/:id" element={<BlogDetails />} />
           <Route path="videos" element={<Videos />} />
           <Route path="contact" element={<Contact />} />
         </Route>
