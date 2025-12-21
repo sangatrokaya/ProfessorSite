@@ -32,6 +32,7 @@ app.use("/api/papers", paperRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/videos", videoRoutes);
+
 /* ------- Root test route (optional) ------------- */
 
 // Root route to verify that the API server is running
