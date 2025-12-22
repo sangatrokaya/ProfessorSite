@@ -8,6 +8,8 @@ import paperRoutes from "./routes/paperRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 import videoRoutes from "./routes/videoRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
+
 // Load environment variable into process.env
 dotenv.config();
 
@@ -32,6 +34,7 @@ app.use("/api/papers", paperRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/videos", videoRoutes);
+app.use("/api/contact", contactRoutes);
 
 /* ------- Root test route (optional) ------------- */
 
