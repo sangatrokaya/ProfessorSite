@@ -22,6 +22,7 @@ import AdminPapers from "./pages/admin/Papers.jsx";
 import AdminCourses from "./pages/admin/Courses.jsx";
 import AdminBlogs from "./pages/admin/Blogs.jsx";
 import AdminVideos from "./pages/admin/Videos.jsx";
+import Profile from "./pages/admin/Profile.jsx";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
           <Route path="courses" element={<AdminCourses />} />
           <Route path="blogs" element={<AdminBlogs />} />
           <Route path="videos" element={<AdminVideos />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>
