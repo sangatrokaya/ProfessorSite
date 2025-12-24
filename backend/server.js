@@ -9,6 +9,7 @@ import courseRoutes from "./routes/courseRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 import videoRoutes from "./routes/videoRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
 
 // Load environment variable into process.env
 dotenv.config();
@@ -35,6 +36,7 @@ app.use("/api/courses", courseRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/videos", videoRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/profile", profileRoutes);
 
 /* ------- Root test route (optional) ------------- */
 
