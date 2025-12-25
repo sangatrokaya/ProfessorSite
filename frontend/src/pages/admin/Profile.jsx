@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import api from "@/services/api";
 
 const Profile = () => {
+  const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
     name: "",
     designation: "",
@@ -10,33 +11,41 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    api.get("/api/profile").then(({ data }) => {
-      if (data) setForm(data);
-    });
+    const fetchProfile = async () => {
+      try {
+        const { data } = await api.get("/api/profile");
+        if (data) setForm(data);
+      } catch (error) {
+        console.log("Profile not found (first setup)!");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
   }, []);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     await api.put("/api/profile", form);
-    alert("Profile updated successfully!");
+    alert("Profile saved successfully!");
   };
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Admin Profile</h2>
+      <h2 className="text-xl font-bold mb-6">Admin Profile</h2>
 
       <form onSubmit={submitHandler} className="space-y-4">
         <input
           className="border p-2 w-full"
-          type="text"
-          placeholder="Name"
+          placeholder="Full Name"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
 
         <input
           className="border p-2 w-full"
-          type="text"
           placeholder="Designation"
           value={form.designation}
           onChange={(e) => ({ ...form, designation: e.target.value })}
