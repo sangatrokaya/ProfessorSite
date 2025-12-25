@@ -1,17 +1,24 @@
 import mongoose from "mongoose";
 
+/*
+  Academic Profile Schema
+  Represents the single public identity of the professor
+*/
 const profileSchema = mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
+      trim: true,
     },
-    designation: { type: String },
+    designation: { type: String, trim: true },
     bio: { type: String },
     about: { type: String },
-    email: { type: String },
-    phone: { type: String },
-    website: { type: String },
+    contact: {
+      email: String,
+      phone: String,
+      website: String,
+    },
     socials: {
       facebook: String,
       instagram: String,
