@@ -21,6 +21,10 @@ export const protect = async (req, res, next) => {
       // Exclude password from the returned admin object
       req.admin = await Admin.findById(decoded.id).select("-password");
 
+      if (!req.admin) {
+        return res.status(401).json({ message: "Admin not found!" });
+      }
+
       // Call next middleware or route handler
       next();
     } catch (error) {

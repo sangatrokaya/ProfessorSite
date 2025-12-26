@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import api from "@/services/api";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const [loading, setLoading] = useState(true);
@@ -44,9 +45,9 @@ const Profile = () => {
         },
       });
 
-      alert("Profile saved successfully!");
+      toast.success("Profile saved successfully!");
     } catch (error) {
-      alert("Profile save failed!");
+      toast.error("Profile save failed!");
       console.error("SAVE ERROR:", error.response?.data);
     }
   };

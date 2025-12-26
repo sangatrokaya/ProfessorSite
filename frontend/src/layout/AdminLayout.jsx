@@ -1,13 +1,19 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const AdminLayout = () => {
+  const navigate = useNavigate();
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside className="w-64 bg-slate-900 text-white p-4">
-        <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
+        <h2 className="text-xl font-bold mb-6">Admin Dasboard</h2>
         <nav className="space-y-3">
-          <p className="cursor-pointer">Dashboard</p>
+          <p
+            className="cursor-pointer"
+            onClick={() => navigate("/admin/dashboard")}
+          >
+            Dashboard
+          </p>
           <p
             className="cursor-pointer"
             onClick={() => navigate("/admin/papers")}

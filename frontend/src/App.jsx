@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 /* --------- LAYOUTS -------------- */
 import PublicLayout from "./layout/PublicLayout.jsx";
@@ -60,6 +61,13 @@ function App() {
           <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
+
+      {/* Global Toast Container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        newestOnTop={true}
+      />
     </BrowserRouter>
   );
 }

@@ -1,52 +1,66 @@
 import { useEffect, useState } from "react";
 import api from "@/services/api";
-import { useSelector } from "react-redux";
 
 const Papers = () => {
   const [papers, setPapers] = useState([]);
-  const { adminInfo } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPapers = async () => {
-      const { data } = await api.get("/api/papers");
-      setPapers(data);
+      try {
+        setLoading(true);
+        const { data } = await api.get("/api/papers");
+        setPapers(data);
+      } catch (error) {
+        console.error("Failed to fetch courses: ", error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchPapers();
   }, []);
 
   const addPaperHandler = async () => {
-    await api.post(
-      "/api/papers",
-      {
+    try {
+      setLoading(true);
+      const { data: newPaper } = await api.post("/api/papers", {
         title: "Sample Paper",
         authors: ["Professor"],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${adminInfo.token}`,
-        },
-      }
-    );
-    window.location.reload();
+      });
+
+      // Updae local state immediately
+      setPapers((prevPapers) => [newPaper, ...prevPapers]);
+    } catch (error) {
+      console.error("Failed to add paper: ", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">Papers & Publications</h2>
       <button
-        className="bg-black text-white px-4 py-2 mb-4"
+        className={`px-4 py-2 mb-4 text-white ${
+          loading ? "bg-gray-400 cursor-not-allowed" : "bg-black"
+        }`}
         onClick={addPaperHandler}
+        disabled={loading}
       >
-        Add Paper
+        {loading ? "Processing.." : "Add Paper"}
       </button>
 
-      <ul className="sapce-y-2">
-        {papers.map((paper) => (
-          <li key={paper._id} className="bg-white p-3 shadow">
-            {paper.title}
-          </li>
-        ))}
-      </ul>
+      {loading && papers.length === 0 ? (
+        <p>Loading courses...</p>
+      ) : (
+        <ul className="sapce-y-2">
+          {papers.map((paper) => (
+            <li key={paper._id} className="bg-white p-3 shadow">
+              {paper.title}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

@@ -1,39 +1,39 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import api from "@/services/api";
 
 const Videos = () => {
   const [videos, setVideos] = useState([]);
-  const { adminInfo } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchVideos = async () => {
-      const { data } = await api.get("api/videos/admin", {
-        headers: {
-          Authorization: `Bearer ${adminInfo.token}`,
-        },
-      });
-      setVideos(data);
+      try {
+        setLoading(true);
+        const { data } = await api.get("api/videos/admin", {});
+        setVideos(data);
+      } catch (error) {
+        console.error("Failed to fetch videos: ", error);
+      } finally {
+        setLoading(false);
+      }
     };
-    if (adminInfo) fetchVideos();
-  }, [adminInfo]);
+    fetchVideos();
+  }, []);
 
   const addVideoHandler = async () => {
-    await api.post(
-      "/api/videos",
-      {
+    try {
+      setLoading(true);
+      const { data: newVideo } = await api.post("/api/videos", {
         title: "Sample Video",
         url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         platform: "youtube",
         published: true,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${adminInfo.token}`,
-        },
-      }
-    );
-    window.location.reload();
+      });
+    } catch (error) {
+      console.error("Failed to add video: ", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,20 +41,27 @@ const Videos = () => {
       <h2 className="text-xl font-bold mb-4">Videos</h2>
 
       <button
-        className="bg-black text-white px-4 py-2 mb-4"
+        className={`px-4 py-2 mb-4 text-white ${
+          loading ? "bg-gray-400 cursor-not-allowed" : "bg-black"
+        }`}
         onClick={addVideoHandler}
+        disabled={loading}
       >
-        Add Video
+        {loading ? "Processing..." : "Add Video"}
       </button>
 
-      <ul className="space-y-2">
-        {videos.map((video) => (
-          <li key={video._id} className="bg-white p-3 shadow">
-            <p className="font-semibold">{video.title}</p>
-            <p className="text-sm text-gray-600">{video.platform}</p>
-          </li>
-        ))}
-      </ul>
+      {loading && videos.length === 0 ? (
+        <p>Loading videos...</p>
+      ) : (
+        <ul className="space-y-2">
+          {videos.map((video) => (
+            <li key={video._id} className="bg-white p-3 shadow">
+              <p className="font-semibold">{video.title}</p>
+              <p className="text-sm text-gray-600">{video.platform}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
