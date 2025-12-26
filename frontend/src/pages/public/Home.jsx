@@ -9,14 +9,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const Home = () => {
   const [blogs, setBlogs] = useState([]);
   const [videos, setVideos] = useState([]);
+  const [papers, setPapers] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const blogsRes = await api.get("/api/blogs");
       const videosRes = await api.get("/api/videos");
+      const papersRes = await api.get("/api/papers");
 
       setBlogs(blogsRes.data.slice(0, 3));
       setVideos(videosRes.data.slice(0, 3));
+      setPapers(papersRes.data.slice(0, 3));
     };
 
     fetchData();
@@ -55,7 +58,7 @@ const Home = () => {
       {/* BLOGS */}
       <section className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-bold">Latest Blogs</h2>
+          <h2 className="text-2xl font-bold">Featured Blogs</h2>
           <Link to="/blogs" className="text-sm underline text-muted-foreground">
             View all
           </Link>
@@ -78,9 +81,9 @@ const Home = () => {
       </section>
 
       {/* VIDEOS */}
-      <section className="container mx-auto mb-4">
+      <section className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-bold">Latest Videos</h2>
+          <h2 className="text-2xl font-bold">Featured Videos</h2>
           <Link
             to="/videos"
             className="text-sm underline text-muted-foreground"
@@ -99,6 +102,55 @@ const Home = () => {
                 <Badge variant="secondary" className="capitalize">
                   {video.platform}
                 </Badge>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured Papers */}
+      <section className="container mx-auto px-4">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-2xl font-bold">Featured Papers & Publications</h2>
+          <Link
+            to="/papers"
+            className="text-sm underline text-muted-foreground"
+          >
+            View all
+          </Link>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {papers.map((paper) => (
+            <Card key={paper._id} className="hover:shadow-md transition-shadow">
+              <CardHeader className="space-y-2">
+                <CardTitle classNameline-clamp-2 text-base>
+                  {paper.title}
+                </CardTitle>
+
+                {paper.year && (
+                  <Badge variant="secondary" className="w-fit">
+                    {paper.year}
+                  </Badge>
+                )}
+              </CardHeader>
+
+              <CardContent>
+                {paper.journal && (
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {paper.journal}
+                  </p>
+                )}
+                {paper.link && (
+                  <a
+                    href={paper.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm underline mt-3 inline-block"
+                  >
+                    View Publication
+                  </a>
+                )}
               </CardContent>
             </Card>
           ))}
