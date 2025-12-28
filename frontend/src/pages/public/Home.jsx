@@ -5,28 +5,43 @@ import api from "@/services/api";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import CardSkeleton from "@/components/skeletons/CardSkeleton";
 
 const Home = () => {
   const [blogs, setBlogs] = useState([]);
   const [videos, setVideos] = useState([]);
   const [papers, setPapers] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const blogsRes = await api.get("/api/blogs");
-      const videosRes = await api.get("/api/videos");
-      const papersRes = await api.get("/api/papers");
-      const coursesRes = await api.get("/api/courses");
+      try {
+        const blogsRes = await api.get("/api/blogs");
+        const videosRes = await api.get("/api/videos");
+        const papersRes = await api.get("/api/papers");
+        const coursesRes = await api.get("/api/courses");
 
-      setBlogs(blogsRes.data.slice(0, 3));
-      setVideos(videosRes.data.slice(0, 3));
-      setPapers(papersRes.data.slice(0, 3));
-      setCourses(coursesRes.data.slice(0, 3));
+        setBlogs(blogsRes.data.slice(0, 3));
+        setVideos(videosRes.data.slice(0, 3));
+        setPapers(papersRes.data.slice(0, 3));
+        setCourses(coursesRes.data.slice(0, 3));
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
   }, []);
+
+  const SkeletonGrid = ({ count = 3 }) => (
+    <div className="grid md:grid-cols-3 gap-6">
+      {Array.from({ length: count }).map((_, i) => (
+        <CardSkeleton key={i} />
+      ))}
+    </div>
+  );
 
   return (
     <div className="space-y-24">
@@ -67,20 +82,27 @@ const Home = () => {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {blogs.map((blog) => (
-            <Card key={blog._id} className="hover:shadow-md transition-shadow">
-              <CardHeader>
-                <CardTitle className="line-clamp-2">{blog.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground line-clamp-3">
-                  {blog.content}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {loading ? (
+          <SkeletonGrid />
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6">
+            {blogs.map((blog) => (
+              <Card
+                key={blog._id}
+                className="hover:shadow-md transition-shadow"
+              >
+                <CardHeader>
+                  <CardTitle className="line-clamp-2">{blog.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground line-clamp-3">
+                    {blog.content}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* VIDEOS */}
@@ -95,20 +117,27 @@ const Home = () => {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {videos.map((video) => (
-            <Card key={video._id} className="hover:shadow-md transition-shadow">
-              <CardHeader>
-                <CardTitle className="line-clamp-2">{video.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Badge variant="secondary" className="capitalize">
-                  {video.platform}
-                </Badge>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {loading ? (
+          <SkeletonGrid />
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6">
+            {videos.map((video) => (
+              <Card
+                key={video._id}
+                className="hover:shadow-md transition-shadow"
+              >
+                <CardHeader>
+                  <CardTitle className="line-clamp-2">{video.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary" className="capitalize">
+                    {video.platform}
+                  </Badge>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Featured Papers */}
@@ -123,41 +152,48 @@ const Home = () => {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {papers.map((paper) => (
-            <Card key={paper._id} className="hover:shadow-md transition-shadow">
-              <CardHeader className="space-y-2">
-                <CardTitle classNameline-clamp-2 text-base>
-                  {paper.title}
-                </CardTitle>
+        {loading ? (
+          <SkeletonGrid />
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6">
+            {papers.map((paper) => (
+              <Card
+                key={paper._id}
+                className="hover:shadow-md transition-shadow"
+              >
+                <CardHeader className="space-y-2">
+                  <CardTitle className="line-clamp-2 text-base">
+                    {paper.title}
+                  </CardTitle>
 
-                {paper.year && (
-                  <Badge variant="secondary" className="w-fit">
-                    {paper.year}
-                  </Badge>
-                )}
-              </CardHeader>
+                  {paper.year && (
+                    <Badge variant="secondary" className="w-fit">
+                      {paper.year}
+                    </Badge>
+                  )}
+                </CardHeader>
 
-              <CardContent>
-                {paper.journal && (
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {paper.journal}
-                  </p>
-                )}
-                {paper.link && (
-                  <a
-                    href={paper.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm underline mt-3 inline-block"
-                  >
-                    View Publication
-                  </a>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                <CardContent>
+                  {paper.journal && (
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {paper.journal}
+                    </p>
+                  )}
+                  {paper.link && (
+                    <a
+                      href={paper.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm underline mt-3 inline-block"
+                    >
+                      View Publication
+                    </a>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Featured Courses */}
@@ -172,36 +208,40 @@ const Home = () => {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {courses.map((course) => (
-            <Card
-              key={course._id}
-              className="hover:shadow-md transition-shadow"
-            >
-              <CardHeader className="space-y-2">
-                <CardTitle className="line-clamp-2 text-base">
-                  {course.title}
-                </CardTitle>
+        {loading ? (
+          <SkeletonGrid />
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6">
+            {courses.map((course) => (
+              <Card
+                key={course._id}
+                className="hover:shadow-md transition-shadow"
+              >
+                <CardHeader className="space-y-2">
+                  <CardTitle className="line-clamp-2 text-base">
+                    {course.title}
+                  </CardTitle>
 
-                {course.semester && (
-                  <Badge variant="outline" className="w-fit">
-                    {course.semester}
-                  </Badge>
-                )}
-              </CardHeader>
+                  {course.semester && (
+                    <Badge variant="outline" className="w-fit">
+                      {course.semester}
+                    </Badge>
+                  )}
+                </CardHeader>
 
-              <CardContent className="space-y-4">
-                <p className="text-sm text-muted-foreground line-clamp-3">
-                  {course.description}
-                </p>
-              </CardContent>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-muted-foreground line-clamp-3">
+                    {course.description}
+                  </p>
+                </CardContent>
 
-              <Button variant="link" className="px-6" asChild>
-                <Link to={`/courses/${course._id}`}>View Course</Link>
-              </Button>
-            </Card>
-          ))}
-        </div>
+                <Button variant="link" className="px-6" asChild>
+                  <Link to={`/courses/${course._id}`}>View Course</Link>
+                </Button>
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
