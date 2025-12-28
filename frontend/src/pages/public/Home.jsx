@@ -10,16 +10,19 @@ const Home = () => {
   const [blogs, setBlogs] = useState([]);
   const [videos, setVideos] = useState([]);
   const [papers, setPapers] = useState([]);
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const blogsRes = await api.get("/api/blogs");
       const videosRes = await api.get("/api/videos");
       const papersRes = await api.get("/api/papers");
+      const coursesRes = await api.get("/api/courses");
 
       setBlogs(blogsRes.data.slice(0, 3));
       setVideos(videosRes.data.slice(0, 3));
       setPapers(papersRes.data.slice(0, 3));
+      setCourses(coursesRes.data.slice(0, 3));
     };
 
     fetchData();
@@ -152,6 +155,50 @@ const Home = () => {
                   </a>
                 )}
               </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured Courses */}
+      <section className="container mx-auto px-4">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-2xl font-bold">Featured Courses</h2>
+          <Link
+            to="/courses"
+            className="text-sm underline text-muted-foreground"
+          >
+            View All
+          </Link>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {courses.map((course) => (
+            <Card
+              key={course._id}
+              className="hover:shadow-md transition-shadow"
+            >
+              <CardHeader className="space-y-2">
+                <CardTitle className="line-clamp-2 text-base">
+                  {course.title}
+                </CardTitle>
+
+                {course.semester && (
+                  <Badge variant="outline" className="w-fit">
+                    {course.semester}
+                  </Badge>
+                )}
+              </CardHeader>
+
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground line-clamp-3">
+                  {course.description}
+                </p>
+              </CardContent>
+
+              <Button variant="link" className="px-6" asChild>
+                <Link to={`/courses/${course._id}`}>View Course</Link>
+              </Button>
             </Card>
           ))}
         </div>
