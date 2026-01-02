@@ -7,14 +7,20 @@ import api from "@/services/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+
 import { calculateReadingStats } from "@/utils/readingTime";
+import AuthorCard from "@/components/AuthorCard";
 
 const BlogDetails = () => {
   const { id } = useParams();
+
   const [blog, setBlog] = useState();
+  const [author, setAuthor] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const { wordCount, readingTime } = blog
     ? calculateReadingStats(blog.content)
     : { wordCount: 0, readingTime: 0 };
@@ -27,10 +33,20 @@ const BlogDetails = () => {
       } catch (error) {
         console.error("Failed to fetch blog!", error);
       } finally {
-        setLoading(false);
+        setLoading(false); // Loading depends on blog
+      }
+    };
+
+    const fetchAuthor = async () => {
+      try {
+        const { data } = await api.get("/api/profile");
+        setAuthor(data);
+      } catch (error) {
+        console.log("Failed to fetch author info!", error);
       }
     };
     fetchBlog();
+    fetchAuthor();
   }, [id]);
 
   if (loading) {
@@ -66,7 +82,7 @@ const BlogDetails = () => {
       {/* Meta */}
       <div className="flex items-center gap-3 text-sm text-muted-foreground">
         <Badge variant="secondary">Blog</Badge>
-        <div className="flex item-center gap-1 text-sm text-gray-500">
+        <div className="flex items-center gap-1 text-sm text-gray-500">
           <span>{new Date(blog.createdAt).toDateString()}</span>
           <span>•</span>
           <span>{readingTime} min read</span>
@@ -74,6 +90,9 @@ const BlogDetails = () => {
           <span>{wordCount} words</span>
         </div>
       </div>
+
+      {/* Author Card */}
+      <AuthorCard author={author} />
 
       {/* Divider */}
       <hr />
