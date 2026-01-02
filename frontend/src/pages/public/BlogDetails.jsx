@@ -9,11 +9,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { calculateReadingStats } from "@/utils/readingTime";
 
 const BlogDetails = () => {
   const { id } = useParams();
   const [blog, setBlog] = useState();
   const [loading, setLoading] = useState(true);
+  const { wordCount, readingTime } = blog
+    ? calculateReadingStats(blog.content)
+    : { wordCount: 0, readingTime: 0 };
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -62,9 +66,13 @@ const BlogDetails = () => {
       {/* Meta */}
       <div className="flex items-center gap-3 text-sm text-muted-foreground">
         <Badge variant="secondary">Blog</Badge>
-        <span className="text-sm text-gray-500">
-          {new Date(blog.createdAt).toDateString()}
-        </span>
+        <div className="flex item-center gap-1 text-sm text-gray-500">
+          <span>{new Date(blog.createdAt).toDateString()}</span>
+          <span>•</span>
+          <span>{readingTime} min read</span>
+          <span>•</span>
+          <span>{wordCount} words</span>
+        </div>
       </div>
 
       {/* Divider */}
