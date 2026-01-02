@@ -7,6 +7,8 @@ import api from "@/services/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -69,7 +71,11 @@ const BlogDetails = () => {
       <hr />
 
       {/* Content */}
-      <div className="prose prose-lg max-w-none">{blog.content}</div>
+      <div className="prose prose-lg prose-slate max-w-none">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {blog.content}
+        </ReactMarkdown>
+      </div>
     </article>
   );
 };
