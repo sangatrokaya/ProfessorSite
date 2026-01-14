@@ -8,17 +8,16 @@ export const getBlogs = async (req, res) => {
   res.json(blogs);
 };
 
-// @desc Get single blog
+// @desc Get single blog by ID
 // @route GET /api/blogs/:id
-// @access Public
+// @access Public (or Admin if you prefer)
 export const getBlogById = async (req, res) => {
   const blog = await Blog.findById(req.params.id);
 
-  if (blog && blog.published) {
-    res.json(blog);
-  } else {
-    res.status(404).json({ message: "Blog not found!" });
+  if (!blog) {
+    return res.status(404).json({ message: "Blog not found!" });
   }
+  res.json(blog); // allow drafts for admin editor
 };
 
 // @desc Get all blogs (Admin)
@@ -46,11 +45,29 @@ export const createBlog = async (req, res) => {
   res.status(201).json(createdBlog);
 };
 
+// @desc Update blog
+// @route PUT /api/blogs/:id
+// @access Admin
+export const updateBlog = async (req, res) => {
+  const blog = await Blog.findById(req.params.id);
+
+  if (!blog) {
+    return res.status(404).json({ message: "Blog not found!" });
+  }
+
+  blog.title = req.body.title || blog.title;
+  blog.content = req.body.content || blog.content;
+  blog.published = req.body.published ?? blog.published;
+
+  const updatedBlog = await blog.save();
+  res.json(updatedBlog);
+};
+
 // @desc Delete blog
 // @route DELETE /api/blogs/:id
 // @access Admin
 export const deleteBlog = async (req, res) => {
-  const blog = await Blog.findById(req.paramas.id);
+  const blog = await Blog.findById(req.params.id);
 
   if (blog) {
     await blog.deleteOne();

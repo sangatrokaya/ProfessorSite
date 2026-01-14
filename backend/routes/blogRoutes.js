@@ -5,6 +5,7 @@ import {
   getAllBlogsAdmin,
   getBlogs,
   getBlogById,
+  updateBlog,
 } from "../controllers/blogController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
@@ -20,6 +21,7 @@ router.get("/admin", protect, getAllBlogsAdmin);
 router.get("/:id", getBlogById);
 
 router.post("/", protect, createBlog);
+router.put("/:id", protect, updateBlog);
 router.delete("/:id", protect, deleteBlog);
 
 export default router;

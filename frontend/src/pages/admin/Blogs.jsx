@@ -94,15 +94,6 @@ const Blogs = () => {
           ))}
         </ul>
       )}
-
-      <button
-        className={`px-4 py-2 mb-4 text-white ${
-          loading ? "bg-gray-400 cursor-not-allowed" : "bg-black"
-        }`}
-        disabled={loading}
-      >
-        {loading ? "Processing..." : "Add Blog"}
-      </button>
     </div>
   );
 };

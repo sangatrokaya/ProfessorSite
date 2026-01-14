@@ -24,6 +24,7 @@ import AdminCourses from "./pages/admin/Courses.jsx";
 import AdminBlogs from "./pages/admin/Blogs.jsx";
 import AdminVideos from "./pages/admin/Videos.jsx";
 import Profile from "./pages/admin/Profile.jsx";
+import BlogEditor from "./pages/admin/BlogEditor.jsx";
 
 function App() {
   return (
@@ -56,7 +57,11 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="papers" element={<AdminPapers />} />
           <Route path="courses" element={<AdminCourses />} />
+
+          {/* BLOG ROUTES */}
           <Route path="blogs" element={<AdminBlogs />} />
+          <Route path="blogs/new" element={<BlogEditor />} />
+          <Route path="blogs/:id/edit" element={<BlogEditor />} />
           <Route path="videos" element={<AdminVideos />} />
           <Route path="profile" element={<Profile />} />
         </Route>
