@@ -1,5 +1,7 @@
 import Blog from "../models/Blog.js";
 
+/* ------------------- PUBLIC ------------------------ */
+
 // @desc Get all the blogs
 // @route GET /api/blogs
 // @access Public
@@ -14,11 +16,13 @@ export const getBlogs = async (req, res) => {
 export const getBlogById = async (req, res) => {
   const blog = await Blog.findById(req.params.id);
 
-  if (!blog) {
+  if (!blog || !blog.published) {
     return res.status(404).json({ message: "Blog not found!" });
   }
   res.json(blog); // allow drafts for admin editor
 };
+
+/* --------------------- ADMIN ------------------------ */
 
 // @desc Get all blogs (Admin)
 // @route GET /api/blogs/admin
@@ -32,47 +36,66 @@ export const getAllBlogsAdmin = async (req, res) => {
 // @route POST /api/blogs
 // @access Admin
 export const createBlog = async (req, res) => {
-  const { title, content, tags, published } = req.body;
+  try {
+    const { title, content, tags, published } = req.body;
 
-  const blog = new Blog({
-    title,
-    content,
-    tags,
-    published,
-  });
+    if (!title || !content) {
+      return res
+        .status(400)
+        .json({ message: "Title and content are required" });
+    }
+    const blog = new Blog({
+      title,
+      content,
+      tags,
+      published,
+    });
 
-  const createdBlog = await blog.save();
-  res.status(201).json(createdBlog);
+    const createdBlog = await blog.save();
+    res.status(201).json(createdBlog);
+  } catch (error) {
+    console.error("Create blog error: ", error);
+    res.status(500).json({ message: "Failed to create blog" });
+  }
 };
 
 // @desc Update blog
 // @route PUT /api/blogs/:id
 // @access Admin
 export const updateBlog = async (req, res) => {
-  const blog = await Blog.findById(req.params.id);
+  try {
+    const blog = await Blog.findById(req.params.id);
 
-  if (!blog) {
-    return res.status(404).json({ message: "Blog not found!" });
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found!" });
+    }
+
+    blog.title = req.body.title || blog.title;
+    blog.content = req.body.content || blog.content;
+    blog.published = req.body.published ?? blog.published;
+
+    const updatedBlog = await blog.save();
+    res.json(updatedBlog);
+  } catch (error) {
+    console.error("Update blog error: ", error);
+    res.status(500).json({ message: "Failed to update blog!" });
   }
-
-  blog.title = req.body.title || blog.title;
-  blog.content = req.body.content || blog.content;
-  blog.published = req.body.published ?? blog.published;
-
-  const updatedBlog = await blog.save();
-  res.json(updatedBlog);
 };
 
 // @desc Delete blog
 // @route DELETE /api/blogs/:id
 // @access Admin
 export const deleteBlog = async (req, res) => {
-  const blog = await Blog.findById(req.params.id);
+  try {
+    const blog = await Blog.findById(req.params.id);
 
-  if (blog) {
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found!" });
+    }
     await blog.deleteOne();
     res.json({ message: "Blog removed successfully..." });
-  } else {
-    res.status(404).json({ message: "Blog not found!" });
+  } catch (error) {
+    console.error("Delete blog error: ", error);
+    res.status(500).json({ message: "Failed to delete blog!" });
   }
 };

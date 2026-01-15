@@ -22,6 +22,7 @@ const BlogEditor = () => {
 
   const [loading, setLoading] = useState(isEditMode);
   const [saving, setSaving] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
   const [form, setForm] = useState({
     title: "",
     content: "",
@@ -63,8 +64,17 @@ const BlogEditor = () => {
       }
       navigate("/admin/blogs");
     } catch (error) {
-      console.error("Failed to save blog!", error);
-      alert("Failed to save blog!");
+      console.error("Save blog error: ", error);
+
+      if (error.response) {
+        console.error("Response data: ", error.response.data);
+        console.error("Status: ", error.response.status);
+        toast.error(error.response.data?.message || "Save filed");
+      } else {
+        toast.error("Network or server error");
+      }
+      // console.error("Failed to save blog!", error);
+      // alert("Failed to save blog!");
     } finally {
       setSaving(false);
     }
@@ -99,9 +109,14 @@ const BlogEditor = () => {
   }
 
   return (
-    <div className="max-w-6xl space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
+    <div
+      className={`${
+        fullscreen ? "fixed inset-0 z-50 bg-background overflow-auto" : ""
+      }`}
+    >
+      <div className="max-w-6xl mx-auto space-y-6 px-4 py-6">
+        {/* Header */}
+        {/* <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold">
             {isEditMode ? "Edit Blog" : "New Blog"}
@@ -124,62 +139,105 @@ const BlogEditor = () => {
             Delete
           </Button>
         </div>
-      </div>
+      </div> */}
 
-      {/* Publish Toggle */}
-      <div className="flex items-center gap-3">
-        <Switch
-          checked={form.published}
-          onCheckedChange={(value) => setForm({ ...form, published: value })}
-        />
-        <Badge variant={form.published ? "default" : "secondary"}>
-          {form.published ? "Published" : "Draft"}
-        </Badge>
-      </div>
-
-      {/* Title */}
-      <Input
-        placeholder="Blog title"
-        value={form.title}
-        onChange={(e) => setForm({ ...form, title: e.target.value })}
-        className="text-lg font-semibold"
-      />
-
-      {/* Word Count + Reading Time */}
-      <div className="rounded-md border bg-muted/40 px-3 py-2">
-        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-          <span>{wordCount} words</span>
-          <span>•</span>
-          <span>{readingTime} min read</span>
-        </div>
-      </div>
-
-      {/* Editor + Preview */}
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Markdown Input */}
-        <div className="space-y-2">
-          <p className="text-sm font-medium">Markdown Content</p>
-          <Textarea
-            rows={18}
-            placeholder="Write your blog in Markdown..."
-            value={form.content}
-            onChange={(e) => setForm({ ...form, content: e.target.value })}
-            className="font-mono"
-          />
-        </div>
-
-        {/* Live Preview */}
-        <div className="space-y-2">
-          <p className="text-sm font-medium">Preview</p>
-          <div className="border rounded-lg p-4 prose max-w-none">
-            {form.content ? (
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {form.content}
-              </ReactMarkdown>
-            ) : (
-              <p className="text-muted-foreground">
-                Start typing to see preview...
+        {/* Sticky Toolbar */}
+        <div className="sticky top-0 z-20 bg-background border-b">
+          <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            {/* Left */}
+            <div>
+              <h2 className="text-lg font-semibold">
+                {isEditMode ? "Edit Blog" : "New Blog"}
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                {wordCount} words • {readingTime} min read
               </p>
+            </div>
+
+            {/* Right */}
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setFullscreen((prev) => !prev)}
+              >
+                {fullscreen ? "Exit Fullscreen" : "Fullscreen"}
+              </Button>
+              <Link to="/admin/blogs">
+                <Button variant="outline" size="sm">
+                  ← Back
+                </Button>
+              </Link>
+              <Button size="sm" onClick={submitHandler} disabled={saving}>
+                {saving ? "Saving" : "Save"}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Publish Toggle */}
+        <div className="flex items-center gap-3">
+          <Switch
+            checked={form.published}
+            onCheckedChange={(value) => setForm({ ...form, published: value })}
+          />
+          <Badge variant={form.published ? "default" : "secondary"}>
+            {form.published ? "Published" : "Draft"}
+          </Badge>
+        </div>
+
+        {/* Title */}
+        <Input
+          placeholder="Blog title"
+          value={form.title}
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
+          className="text-3xl font-bold border-none px-0 focus-visible:ring-0"
+        />
+
+        {/* Editor + Preview */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Markdown Input */}
+          <div className="space-y-2">
+            <p className="text-sm font-medium">Markdown Content</p>
+            <Textarea
+              rows={20}
+              placeholder="Write your blog in Markdown..."
+              value={form.content}
+              onChange={(e) => setForm({ ...form, content: e.target.value })}
+              className="font-mono text-sm leading-relaxed focus-visible:ring-2"
+            />
+          </div>
+
+          {/* Live Preview */}
+          <div className="space-y-2">
+            <p className="text-sm font-medium">Preview</p>
+            <div className="border rounded-lg p-4 prose max-w-none">
+              {form.content ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {form.content}
+                </ReactMarkdown>
+              ) : (
+                <p className="text-muted-foreground">
+                  Start typing to see preview...
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Footer Actions */}
+          <div className="flex justify-between pt-6 border-t">
+            <Button variant="outline" onClick={() => navigate("/admin/blogs")}>
+              Cancel
+            </Button>
+
+            {isEditMode && (
+              <Button
+                variant="destructive"
+                onClick={deleteBlogHandler}
+                className="text-white"
+              >
+                Delete Blog
+              </Button>
             )}
           </div>
         </div>
