@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import api from "@/services/api";
 
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,8 @@ import { Switch } from "@/components/ui/switch";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+
+import { calculateReadingStats } from "@/utils/readingTime";
 
 const BlogEditor = () => {
   const { id } = useParams(); // undefined for new blog
@@ -25,6 +27,8 @@ const BlogEditor = () => {
     content: "",
     published: false,
   });
+
+  const { wordCount, readingTime } = calculateReadingStats(form.content || "");
 
   /* ------------- FETCH BLOG (EDIT MODE) ---------------- */
   useEffect(() => {
@@ -66,6 +70,24 @@ const BlogEditor = () => {
     }
   };
 
+  /* ------------ DELETE BLOG HANDLER -------------- */
+  const deleteBlogHandler = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this blog?  This action can't be undone."
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/api/blogs/${id}`);
+      toast.success("Blog deleted successfully");
+      navigate("/admin/blogs");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete blog!");
+    }
+  };
+
   /* ------------ LOADING STATE ---------------- */
   if (loading) {
     return (
@@ -94,6 +116,13 @@ const BlogEditor = () => {
           <Button onClick={submitHandler} disabled={saving}>
             {saving ? "Saving..." : "Save"}
           </Button>
+          <Button
+            variant="destructive"
+            onClick={deleteBlogHandler}
+            className="text-white"
+          >
+            Delete
+          </Button>
         </div>
       </div>
 
@@ -115,6 +144,15 @@ const BlogEditor = () => {
         onChange={(e) => setForm({ ...form, title: e.target.value })}
         className="text-lg font-semibold"
       />
+
+      {/* Word Count + Reading Time */}
+      <div className="rounded-md border bg-muted/40 px-3 py-2">
+        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+          <span>{wordCount} words</span>
+          <span>•</span>
+          <span>{readingTime} min read</span>
+        </div>
+      </div>
 
       {/* Editor + Preview */}
       <div className="grid md:grid-cols-2 gap-6">
