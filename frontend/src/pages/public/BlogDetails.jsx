@@ -98,11 +98,10 @@ const BlogDetails = () => {
       <hr />
 
       {/* Content */}
-      <div className="prose prose-lg prose-slate max-w-none">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {blog.content}
-        </ReactMarkdown>
-      </div>
+      <div
+        className="prose prose-lg max-w-none"
+        dangerouslySetInnerHTML={{ __html: blog.content }}
+      />
     </article>
   );
 };

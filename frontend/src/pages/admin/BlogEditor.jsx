@@ -10,10 +10,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+// import ReactMarkdown from "react-markdown";
+// import remarkGfm from "remark-gfm";
 
 import { calculateReadingStats } from "@/utils/readingTime";
+import SimpleEditor from "@/components/editor/SimpleEditor";
 
 const BlogEditor = () => {
   const { id } = useParams(); // undefined for new blog
@@ -115,32 +116,6 @@ const BlogEditor = () => {
       }`}
     >
       <div className="max-w-6xl mx-auto space-y-6 px-4 py-6">
-        {/* Header */}
-        {/* <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">
-            {isEditMode ? "Edit Blog" : "New Blog"}
-          </h2>
-          <p className="text-sm text-muted-foreground">Markdown supported</p>
-        </div>
-
-        <div className="flex gap-3">
-          <Link to="/admin/blogs">
-            <Button variant="outline">Cancel</Button>
-          </Link>
-          <Button onClick={submitHandler} disabled={saving}>
-            {saving ? "Saving..." : "Save"}
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={deleteBlogHandler}
-            className="text-white"
-          >
-            Delete
-          </Button>
-        </div>
-      </div> */}
-
         {/* Sticky Toolbar */}
         <div className="sticky top-0 z-20 bg-background border-b">
           <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -198,13 +173,18 @@ const BlogEditor = () => {
         <div className="grid md:grid-cols-2 gap-6">
           {/* Markdown Input */}
           <div className="space-y-2">
-            <p className="text-sm font-medium">Markdown Content</p>
-            <Textarea
+            <p className="text-sm font-medium">Text Editor</p>
+            {/* <Textarea
               rows={20}
               placeholder="Write your blog in Markdown..."
               value={form.content}
               onChange={(e) => setForm({ ...form, content: e.target.value })}
               className="font-mono text-sm leading-relaxed focus-visible:ring-2"
+            /> */}
+
+            <SimpleEditor
+              value={form.content}
+              onChange={(html) => setForm({ ...form, content: html })}
             />
           </div>
 
@@ -213,9 +193,10 @@ const BlogEditor = () => {
             <p className="text-sm font-medium">Preview</p>
             <div className="border rounded-lg p-4 prose max-w-none">
               {form.content ? (
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {form.content}
-                </ReactMarkdown>
+                <div
+                  className="prose max-w-none"
+                  dangerouslySetInnerHTML={{ __html: form.content }}
+                />
               ) : (
                 <p className="text-muted-foreground">
                   Start typing to see preview...
