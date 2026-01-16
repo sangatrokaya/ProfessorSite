@@ -65,13 +65,15 @@ const Home = () => {
         </div>
         <h2 className="text-3xl font-bold tracking-tight">{title}</h2>
       </div>
-      <Link
-        to={link}
-        className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center group gap-1"
-      >
-        {linkText}
-      </Link>
-      <ArrowRight className="w-4 h-4 group-hover: translate-x-1 transition-transform" />
+      <div className="flex items-center group">
+        <Link
+          to={link}
+          className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center group gap-1 whitespace-nowrap"
+        >
+          {linkText}
+        </Link>
+        <ArrowRight className="w-4 h-4 group-hover: translate-x-1 transition-transform" />
+      </div>
     </div>
   );
 
