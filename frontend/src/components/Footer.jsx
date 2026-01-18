@@ -132,8 +132,13 @@ const Footer = () => {
             {/* Brand */}
             <div className="space-y-4">
               <Link to="/" className="flex items-center gap-2 group w-fit">
-                <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                  <GraduationCap className="w-6 h-6 text-primary" />
+                {/* <GraduationCap className="w-6 h-6 text-primary" /> */}
+                <div className="relative">
+                  <img
+                    src="/logo.jpg"
+                    alt="Bhim Rokaya Profile"
+                    className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all"
+                  />
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
                   Asst. Prof. Bhim Rokaya

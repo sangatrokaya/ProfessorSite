@@ -66,8 +66,13 @@ const Navbar = () => {
             to="/"
             className="flex items-center gap-2 text-xl font-bold tracking-tight hover:text-primary transition-colors group"
           >
-            <div className="p-1.5 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-              <GraduationCap className="w-5 h-5 text-primary" />
+            <div className="relative">
+              {/* <GraduationCap className="w-5 h-5 text-primary" /> */}
+              <img
+                src="/logo.jpg"
+                alt="Bhim Rokaya Profile"
+                className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all"
+              />
             </div>
             <span className="bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
               Bhim Rokaya
