@@ -16,6 +16,12 @@ const AdminLayout = () => {
           </p>
           <p
             className="cursor-pointer"
+            onClick={() => navigate("/admin/profile")}
+          >
+            Profile
+          </p>
+          <p
+            className="cursor-pointer"
             onClick={() => navigate("/admin/papers")}
           >
             Papers & Publications
