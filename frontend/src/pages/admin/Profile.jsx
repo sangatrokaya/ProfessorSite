@@ -78,17 +78,16 @@ const Profile = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     setSaving(true);
+    // console.log("token: ", token);
     try {
-      await api.put("/api/profile", form, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await api.put("/api/profile", form);
 
       toast.success("Profile saved successfully!");
     } catch (error) {
       toast.error("Profile save failed!");
       console.error("SAVE ERROR:", error.response?.data);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -196,6 +195,7 @@ const Profile = () => {
                 rows={8}
                 placeholder="Write a detailed description about your background, research interests, teaching philosophy, achievements, etc..."
                 value={form.about}
+                onChange={(e) => setForm({ ...form, about: e.target.value })}
               />
               <p className="text-xs text-muted-foreground">
                 This appears in the main "About Me" section on your profile
@@ -343,7 +343,7 @@ const Profile = () => {
 
         {/* Submit Button */}
         <div className="flex justify-end">
-          <Button type="submit" size="lg" disabled={saving}>
+          <Button type="submit" size="lg" disabled={saving || !token}>
             {saving ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
