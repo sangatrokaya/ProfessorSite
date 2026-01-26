@@ -26,6 +26,34 @@ export const createPaper = async (req, res) => {
   res.status(201).json(createdPaper);
 };
 
+// @desc Update paper
+// @route PUT /api/papers/:id
+// @access Admin
+export const updatePaper = async (req, res) => {
+  try {
+    const { title, authors, journal, year, link } = req.body;
+
+    // Find paper by ID
+    const paper = await Paper.findById(req.params.id);
+
+    if (!paper) {
+      return res.status(404).json({ message: "Paper not found!" });
+    }
+
+    // Update fields(only if provided)
+    paper.title = title || paper.title;
+    paper.authors = authors || paper.authors;
+    paper.journal = journal || paper.journal;
+    paper.year = year || paper.year;
+    paper.link = link || paper.link;
+
+    const updatedPaper = await paper.save();
+    res.json(updatePaper);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update paper", error });
+  }
+};
+
 // @desc Delete paper
 // @route DELETE /api/papers/:id
 // @access Admin

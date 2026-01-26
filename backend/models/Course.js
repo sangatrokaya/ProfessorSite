@@ -12,6 +12,12 @@ const courseSchema = mongoose.Schema(
     semester: {
       type: String,
     },
+    image: {
+      type: String, // Course thumbnail / Cover image
+    },
+    youtubePlaylist: {
+      type: String,
+    },
     materials: [
       {
         type: String, // Links to PDFs, Slides etc.
@@ -20,7 +26,7 @@ const courseSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Course = mongoose.model("Course", courseSchema);
