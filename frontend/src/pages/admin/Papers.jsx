@@ -46,21 +46,24 @@ const Papers = () => {
   });
   const [authorInput, setAuthorInput] = useState("");
 
+  /* Single Source or Truth */
+  const fetchPapers = async () => {
+    try {
+      setLoading(true);
+      const { data } = await api.get("/api/papers");
+      setPapers(data);
+    } catch (error) {
+      console.error("Failed to fetch papers: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchPapers = async () => {
-      try {
-        setLoading(true);
-        const { data } = await api.get("/api/papers");
-        setPapers(data);
-      } catch (error) {
-        console.error("Failed to fetch papers: ", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchPapers();
   }, []);
 
+  /* Form Helpers */
   const resetForm = () => {
     setFormData({
       title: "",
@@ -82,12 +85,11 @@ const Papers = () => {
     setEditingPaper(paper);
     setFormData({
       title: paper.title || "",
-      authors: Array.isArray(paper.authors) ? [...paper.authors] : [], // Safety clone array
+      authors: [...(paper.authors || [])],
       journal: paper.journal || "",
-      year: paper.year ? paper.year.toString() : "", // Convert to string for input
+      year: paper.year?.toString() || "", // Convert to string for input
       link: paper.link || "",
     });
-    setAuthorInput(""); // Clear the author input field
     setIsDialogOpen(true);
   };
 
@@ -108,6 +110,7 @@ const Papers = () => {
     });
   };
 
+  /* SUBMIT (Create / Update) */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -116,7 +119,7 @@ const Papers = () => {
       return;
     }
 
-    if (formData.authors.length === 0) {
+    if (!formData.authors.length) {
       toast.error("At least one author is required");
       return;
     }
@@ -124,35 +127,22 @@ const Papers = () => {
     try {
       setLoading(true);
 
-      // Prepare the data to send
-      const dataToSend = {
-        title: formData.title,
-        authors: formData.authors,
-        journal: formData.journal,
-        year: formData.year ? parseInt(formData.year) : undefined,
-        link: formData.link,
+      const payload = {
+        ...formData,
+        year: formData.year ? Number(formData.year) : undefined,
       };
 
       if (editingPaper) {
-        const paperId = editingPaper._id;
-
-        // Important: clear editing reference first
-        setEditingPaper(null);
-
-        // Update existing paper
-        const { data } = await api.put(`/api/papers/${paperId}`, dataToSend);
-        setPapers((prevPapers) =>
-          prevPapers.map((p) => (p._id === data._id ? data : p)),
-        );
+        await api.put(`/api/papers/${editingPaper._id}`, payload);
         toast.success("Paper updated successfully!");
       } else {
         // Create new paper
-        const { data } = await api.post("/api/papers", dataToSend);
-        setPapers((prevPapers) => [data, ...prevPapers]);
+        await api.post("/api/papers", payload);
         toast.success("Paper added successfully!");
       }
       setIsDialogOpen(false);
       resetForm();
+      await fetchPapers();
     } catch (error) {
       console.error("Failed to save paper: ", error);
       console.error("Error response: ", error.response?.data);
@@ -171,8 +161,8 @@ const Papers = () => {
     try {
       setLoading(true);
       await api.delete(`/api/papers/${id}`);
-      setPapers((prevPapers) => prevPapers.filter((p) => p._id !== id));
       toast.success("Paper deleted successfully!");
+      await fetchPapers();
     } catch (error) {
       console.error("Failed to delete paper: ", error);
       toast.error("Failed to delete paper");
