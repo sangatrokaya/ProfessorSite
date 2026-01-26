@@ -100,8 +100,8 @@ const Papers = () => {
       {/* Hero Header */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-b">
         {/* Decorative Elements */}
-        <div className="absolute inset-0 bg-grid-slate-200 dark:bg-grid-slate-800 [mask-image:linear-gradient(0deg, transparent, black)] opacity-20" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full blur-3xl opacity-20" />
+        <div className="absolute inset-0 bg-grid-slate-600 dark:bg-grid-indigo-800 [mask-image:linear-gradient(0deg, transparent, black)] opacity-20" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-slate-400 to-indigo-600 rounded-full blur-3xl opacity-20" />
 
         <div className="relative max-w-6xl mx-auto px-4 py-16 md:py-24">
           <div className="max-w-5xl">
