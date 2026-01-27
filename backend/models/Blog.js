@@ -10,6 +10,9 @@ const blogSchema = mongoose.Schema(
       type: String, // later: rich text HTML / JSON
       required: true,
     },
+    image: {
+      type: String,
+    },
     tags: [
       {
         type: String,
@@ -22,7 +25,7 @@ const blogSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Blog = mongoose.model("Blog", blogSchema);
