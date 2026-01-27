@@ -444,7 +444,7 @@ const Courses = () => {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-3 gap-6">
           {filteredCourses.map((course) => (
             <Card
               key={course._id}
