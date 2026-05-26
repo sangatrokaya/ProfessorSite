@@ -123,7 +123,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-t border-slate-200 dark:border-slate-800">
+    <footer className="bg-linear-to-br from-slate-50 via-slate-100 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-t border-slate-200 dark:border-slate-800">
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
@@ -140,7 +140,7 @@ const Footer = () => {
                     className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all"
                   />
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                <span className="text-2xl font-bold bg-linear-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
                   Asst. Prof. Bhim Rokaya
                 </span>
               </Link>
@@ -286,12 +286,12 @@ const Footer = () => {
                       href={contact.href}
                       className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-start gap-2 group"
                     >
-                      <contact.icon className="w-4 h-4 mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                      <span className="break-words">{contact.text}</span>
+                      <contact.icon className="w-4 h-4 mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
+                      <span className="wrap-break-word">{contact.text}</span>
                     </a>
                   ) : (
                     <div className="text-sm text-muted-foreground flex items-center gap-2">
-                      <contact.icon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <contact.icon className="w-4 h-4 mt-0.5 shrink-0" />
                       <span>{contact.text}</span>
                     </div>
                   )}
