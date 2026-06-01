@@ -97,12 +97,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden min-h-[600px] md:min-h-[700px] flex items-center">
-        {/* Decorative Background Elements */}
-        {/* <div className="absolute inset-0 bg-grid-slate-200 dark:bg-grid-slate-800 [mask-image:linear-gradient(0deg, transparent, black)] opacity-20" />
-        <div className="absolute top-0 right-0 -translate-y-12 translate-x-12 w-96 h-96 bg-linear-to-br from-blue-400 to-indigo-600 rounded-full blur-3xl opacity-10" />
-        <div className="absolute bottom-0 left-0 translate-y-12 -translate-x-12 w-96 h-96 bg-linear-to-tr from-violet-400 to-purple-600 rounded-full blur-3xl opacity-10" /> */}
-
+      <section className="relative overflow-hidden min-h-150 md:min-h-175 lg:min-h-200 flex items-center">
         {/* Background Photo Carousel */}
         <div className="absolute inset-0">
           {carouselPhotos.map((photo, i) => (
