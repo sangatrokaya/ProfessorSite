@@ -16,6 +16,8 @@ import {
   ExternalLink,
 } from "lucide-react";
 
+import footerBg from "@/assets/carousel/photo1.jpg";
+
 const Footer = () => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -123,9 +125,19 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-linear-to-br from-slate-50 via-slate-100 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-t border-slate-200 dark:border-slate-800">
+    <footer className="relative border-t border-slate-800 overflow-hidden">
+      {/* Background Photo */}
+      <img
+        src={footerBg}
+        alt="Footer Background"
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover object-center"
+      />
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/50" />
+
       {/* Main Footer Content */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="relative z-10 container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
           {/* Brand and Newsletter (Takes more space) */}
           <div className="lg:col-span-4 space-y-6">
@@ -137,15 +149,15 @@ const Footer = () => {
                   <img
                     src="/logo.jpg"
                     alt="Bhim Rokaya Profile"
-                    className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all"
+                    className="w-10 h-10 rounded-full object-cover ring-2 ring-white/20 group-hover:ring-white/40 transition-all"
                   />
                 </div>
-                <span className="text-2xl font-bold bg-linear-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                <span className="text-2xl font-bold text-white">
                   Asst. Prof. Bhim Rokaya
                 </span>
               </Link>
 
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
+              <p className="text-sm text-white/70 leading-relaxed max-w-sm">
                 Assistant Professor dedicated to academic excellence, innovative
                 research, and inspiring the next generation of learners in
                 modern computing and technology.
@@ -155,16 +167,16 @@ const Footer = () => {
             {/* Newsletter CTA */}
             <div className="space-y-3">
               <div className="space-y-1">
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+                <h3 className="text-sm font-semibold text-white">
                   Stay Updated!
                 </h3>
-                <p className="text-xs font-semibold text-muted-foreground">
+                <p className="text-xs text-white/70">
                   Get all the latest research updates and course announcements
                 </p>
               </div>
 
               {isSubscribed ? (
-                <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 px-4 py-2 rounded-lg">
+                <div className="flex items-center gap-2 text-sm text-green-400 bg-green-950/40 border border-green-800/40 px-4 py-2 rounded-lg">
                   <Send className="w-4 h-4" />
                   <span>Successfully subscribed!</span>
                 </div>
@@ -176,13 +188,13 @@ const Footer = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-10 text-sm"
+                    className="h-10 text-sm bg-white/30 border-white/20 text-white placeholder:text-white/30 focus:border-white/30"
                   />
                   <Button
                     type="submit"
                     size="sm"
                     disabled={isSubmitting}
-                    className="h-10 px-4"
+                    className="h-10 px-4 bg-white text-slate-900 hover:bg-white/90"
                   >
                     {isSubmitting ? (
                       "..."
@@ -205,7 +217,7 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className={`p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary transition-all hover:-translate-y-1 ${social.color}`}
+                  className={`p-2 rounded-lg bg-white/30  border border-white/40 hover:border-white/50 text-white/70 transition-all hover:-translate-y-1 ${social.color}`}
                 >
                   <social.icon className="w-4 h-4" />
                 </a>
@@ -215,7 +227,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="lg:col-span-2">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">
+            <h3 className="text-sm font-semibold text-white mb-4">
               Quick Links
             </h3>
             <ul className="space-y-3">
@@ -223,7 +235,7 @@ const Footer = () => {
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-1 group"
+                    className="text-sm text-white/70 hover:text-white transition-colors inline-flex items-center gap-1 group"
                   >
                     <span>{link.title}</span>
                     {link.title === "Career" && (
@@ -237,15 +249,13 @@ const Footer = () => {
 
           {/* Resources */}
           <div className="lg:col-span-2">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">
-              Resources
-            </h3>
+            <h3 className="text-sm font-semibold text-white mb-4">Resources</h3>
             <ul className="space-y-3">
               {resourceLinks.map((link) => (
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    className="text-sm text-white/70 hover:text-white transition-colors"
                   >
                     {link.title}
                   </Link>
@@ -256,7 +266,7 @@ const Footer = () => {
 
           {/* Legal */}
           <div className="lg:col-span-2">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">
+            <h3 className="text-sm font-semibold text-white mb-4">
               Legal Info
             </h3>
             <ul className="space-y-3">
@@ -264,7 +274,7 @@ const Footer = () => {
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    className="text-sm text-white/70 hover:text-white transition-colors"
                   >
                     {link.title}
                   </Link>
@@ -275,7 +285,7 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div className="lg:col-span-2">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">
+            <h3 className="text-sm font-semibold text-white mb-4">
               Contact Info
             </h3>
             <ul className="space-y-3">
@@ -284,13 +294,13 @@ const Footer = () => {
                   {contact.href ? (
                     <a
                       href={contact.href}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-start gap-2 group"
+                      className="text-sm text-white/70 hover:text-white transition-colors flex items-start gap-2 group"
                     >
                       <contact.icon className="w-4 h-4 mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                       <span className="wrap-break-word">{contact.text}</span>
                     </a>
                   ) : (
-                    <div className="text-sm text-muted-foreground flex items-center gap-2">
+                    <div className="text-sm text-white/70 hover:text-white flex items-center gap-2">
                       <contact.icon className="w-4 h-4 mt-0.5 shrink-0" />
                       <span>{contact.text}</span>
                     </div>
@@ -301,7 +311,12 @@ const Footer = () => {
 
             {/* CTA Button */}
             <div className="mt-6">
-              <Button variant="outline" size="sm" className="w-full" asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full border-white/20 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                asChild
+              >
                 <Link to="/contact">
                   <Mail className="w-4 h-4 mr-0" />
                   Get in Touch
@@ -313,9 +328,9 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50">
+      <div className="relative z-10 border-t border-white/10 bg-black/20">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/80">
             {/* Copyright */}
             <div className="flex items-center gap-1">
               <span>
@@ -333,7 +348,7 @@ const Footer = () => {
                 href="https://www.instagram.com/cswithsangat/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-primary hover:underline inline-flex items-center gap-1"
+                className="font-medium text-white/70 hover:text-white hover:underline inline-flex items-center gap-1 transition-colors"
               >
                 Sangat Rokaya
                 <ExternalLink className="w-3 h-3" />
